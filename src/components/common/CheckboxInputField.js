@@ -1,13 +1,16 @@
 import React from 'react';
 
-const CheckboxInputField = ({ label, options, handleChange}) => {
+const CheckboxInputField = ({ label, name, options, value, labelText, onChange}) => {
     return (
         <div className="form-group">
             <label htmlFor={label}>
+                {labelText}
                 <select
                     id={label}
+                    name={name}
                     className="form-control"
-                    onChange={handleChange}
+                    value={value}
+                    onChange={onChange}
                 >
                     {options.map(option =>
                         <option key={option} value={option}>{option}</option>

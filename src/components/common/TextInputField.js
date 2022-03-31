@@ -1,15 +1,17 @@
 import React from 'react';
 
-const TextInputField = ({ label, type, placeholder, handleChange}) => {
+const TextInputField = ({ label, name, labelText, value, onChange}) => {
     return (
         <div className="form-group">
-            <label htmlFor={label}>
+            {labelText}
+            <label htmlFor={name}>
                 <input
-                    type={type}
+                    name={name}
                     className="form-control"
+                    type="text"
                     id={label}
-                    placeholder={placeholder}
-                    onChange={handleChange}
+                    value={value}
+                    onChange={onChange}
                 />
             </label>
         </div>
