@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextInputField = ({ label, type, placeholder}) => {
+const TextInputField = ({ label, type, placeholder, handleChange}) => {
     return (
         <div className="form-group">
             <label htmlFor={label}>
@@ -9,6 +9,7 @@ const TextInputField = ({ label, type, placeholder}) => {
                     className="form-control"
                     id={label}
                     placeholder={placeholder}
+                    onChange={handleChange}
                 />
             </label>
         </div>
