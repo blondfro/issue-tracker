@@ -11,8 +11,10 @@ const IssueForm = () => {
         description: "",
         severity: "",
         assignedTo: "",
-        createdAt: ""
+        createdAt: "",
+        status: ""
     })
+
     const severityOptions = ["Low", "Medium", "High"]
 
     const handleChange = (event) => {
@@ -31,7 +33,8 @@ const IssueForm = () => {
         setIssue(prevIssue => ({
             ...prevIssue,
             _id: uuidv4(),
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            status: "Open"
         }));
 
         setIssue({
