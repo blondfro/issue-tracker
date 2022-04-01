@@ -1,49 +1,18 @@
-import React, {useState} from 'react';
-import { v4 as uuidv4 } from "uuid";
+import React from 'react';
 
 import TextInputField from "../../common/TextInputField";
 import CheckboxInputField from "../../common/CheckboxInputField";
 import Button from "../../common/Button";
 
-const IssueForm = () => {
-    const [ issue, setIssue ] = useState({
-        _id: 0,
-        description: "",
-        severity: "",
-        assignedTo: "",
-        createdAt: "",
-        status: ""
-    })
+import { SEVERITY_LEVEL } from "../../../constants/constants";
 
-    const severityOptions = ["Low", "Medium", "High"]
+const IssueForm = ({ issue, onChange, submit }) => {
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setIssue((prevIssue) => (
-            {
-                ...prevIssue,
-                [name]: value
-            }
-        ))
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        setIssue(prevIssue => ({
-            ...prevIssue,
-            _id: uuidv4(),
-            createdAt: Date.now(),
-            status: "Open"
-        }));
-
-        setIssue({
-            _id: 0,
-            description: "",
-            severity: "",
-            assignedTo: "",
-            createdAt: ""
-        })
+        submit();
     }
 
     return (
@@ -53,22 +22,22 @@ const IssueForm = () => {
                 name="description"
                 labelText="Describe the Issue"
                 value={issue.description}
-                onChange={handleChange}
+                onChange={onChange}
             />
             <CheckboxInputField
                 label="issueSeverityInput"
                 name="severity"
                 labelText="Severity Level"
-                options={severityOptions}
+                options={SEVERITY_LEVEL}
                 value={issue.severity}
-                onChange={handleChange}
+                onChange={onChange}
             />
             <TextInputField
                 label="issueAssignedToInput"
                 name="assignedTo"
                 labelText="Issue assigned to"
                 value={issue.assignedTo}
-                onChange={handleChange}
+                onChange={onChange}
             />
             <Button
                 id="submitBtn"

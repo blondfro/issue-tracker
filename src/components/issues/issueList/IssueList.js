@@ -3,7 +3,6 @@ import Button from "../../common/Button";
 
 const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
 
-
     return (
         <div>
             <h1> Issue List </h1>
@@ -16,13 +15,13 @@ const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
                                    ? <Button
                                        id={issue._id}
                                        classes="btn btn-warning"
-                                       onClick={toggleStatus}
+                                       onClick={() => toggleStatus(issue._id)}
                                        value="Close"
                                    />
                                    : <Button
                                        id={issue._id}
                                        classes="btn btn-success"
-                                       onClick={toggleStatus}
+                                       onClick={()=> toggleStatus(issue._id)}
                                        value="Open"
                                    />
                            }
@@ -35,14 +34,14 @@ const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
                        <Button
                            id={issue._id}
                            classes="btn btn-info"
-                           onClick={handleEdit}
+                           onClick={() => handleEdit(issue._id)}
                            value="Edit"
                        />
                        <Button
                            id={issue._id}
                            classes="btn btn-danger"
-                           onClick={handleDelete}
-                           value="Edit"
+                           onClick={() => handleDelete(issue._id)}
+                           value="Delete"
                        />
                    </div>
                )
