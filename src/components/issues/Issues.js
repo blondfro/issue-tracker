@@ -60,7 +60,6 @@ const Issues = () => {
     }
 
     const handleEdit = (id) => {
-        // console.log(`Edit id: ${id} was clicked.`);
         setIsEditing(true);
 
         const editIssue = issues.find(item => item._id === id);
@@ -68,11 +67,26 @@ const Issues = () => {
     }
 
     const handleDelete = (id) => {
-        console.log(`Delete id: ${id} was clicked.`);
+        const updatedIssues = issues.filter(item => item._id !== id);
+        setIssues(updatedIssues);
     }
 
     const toggleStatus = (id) => {
-        console.log(`Toggle id: ${id} was clicked.`);
+
+        const updatedIssues = issues.filter(item => {
+            if (item._id === id) {
+                if (item.status === STATUS.OPEN) {
+                    item.status = STATUS.CLOSED
+                } else {
+                    item.status = STATUS.OPEN
+                }
+                return item
+            } else {
+                return item
+            }
+        })
+
+        setIssues(updatedIssues);
     }
 
     return (
