@@ -15,6 +15,7 @@ const Issues = () => {
         createdAt: "",
         status: ""
     })
+    const [ isEditing, setIsEditing ] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -48,6 +49,7 @@ const Issues = () => {
             setIssues([ ...issues, newIssue])
         }
 
+        setIsEditing(false);
         setIssue({
             _id: 0,
             description: "",
@@ -58,7 +60,11 @@ const Issues = () => {
     }
 
     const handleEdit = (id) => {
-        console.log(`Edit id: ${id} was clicked.`);
+        // console.log(`Edit id: ${id} was clicked.`);
+        setIsEditing(true);
+
+        const editIssue = issues.find(item => item._id === id);
+        setIssue(editIssue);
     }
 
     const handleDelete = (id) => {
@@ -71,7 +77,12 @@ const Issues = () => {
 
     return (
         <>
-            <IssueForm issue={issue} onChange={handleChange} submit={handleSubmit}/>
+            <IssueForm
+                issue={issue}
+                onChange={handleChange}
+                submit={handleSubmit}
+                editing={isEditing}
+            />
             <IssueList
                 issues={issues}
                 onEdit={handleEdit}

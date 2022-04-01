@@ -6,7 +6,7 @@ import Button from "../../common/Button";
 
 import { SEVERITY_LEVEL } from "../../../constants/constants";
 
-const IssueForm = ({ issue, onChange, submit }) => {
+const IssueForm = ({ issue, onChange, submit, editing }) => {
 
     return (
         <form id="issueInputForm">
@@ -37,7 +37,7 @@ const IssueForm = ({ issue, onChange, submit }) => {
                 type="submit"
                 classes="btn btn-primary"
                 handleClick={e => submit(e)}
-                value="Add Issue"
+                value={editing ? "Edit Issue" : "Add Issue"}
             />
         </form>
     );
