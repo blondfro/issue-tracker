@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../common/Button";
 
-const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
+const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
 
     return (
         <div>
@@ -13,16 +13,16 @@ const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
                            {
                                issue.status === "Open"
                                    ? <Button
-                                       id={issue._id}
+                                       itemId={issue._id}
                                        classes="btn btn-warning"
-                                       onClick={() => toggleStatus(issue._id)}
-                                       value="Close"
+                                       handleClick={toggleStatus}
+                                       value="Close Issue"
                                    />
                                    : <Button
-                                       id={issue._id}
+                                       itemId={issue._id}
                                        classes="btn btn-success"
-                                       onClick={()=> toggleStatus(issue._id)}
-                                       value="Open"
+                                       handleClick={toggleStatus}
+                                       value="Open Issue"
                                    />
                            }
                        </div>
@@ -32,15 +32,15 @@ const IssueList = ({ issues, handleEdit, handleDelete, toggleStatus }) => {
                        <p><span>{issue.severity}</span></p>
                        <p><span>{issue.assignedTo}</span></p>
                        <Button
-                           id={issue._id}
+                           itemId={issue._id}
                            classes="btn btn-info"
-                           onClick={() => handleEdit(issue._id)}
+                           handleClick={onEdit}
                            value="Edit"
                        />
                        <Button
-                           id={issue._id}
+                           itemId={issue._id}
                            classes="btn btn-danger"
-                           onClick={() => handleDelete(issue._id)}
+                           handleClick={onDelete}
                            value="Delete"
                        />
                    </div>

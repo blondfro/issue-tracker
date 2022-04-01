@@ -8,13 +8,6 @@ import { SEVERITY_LEVEL } from "../../../constants/constants";
 
 const IssueForm = ({ issue, onChange, submit }) => {
 
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        submit();
-    }
-
     return (
         <form id="issueInputForm">
             <TextInputField
@@ -40,10 +33,10 @@ const IssueForm = ({ issue, onChange, submit }) => {
                 onChange={onChange}
             />
             <Button
-                id="submitBtn"
+                cssId="submitBtn"
                 type="submit"
                 classes="btn btn-primary"
-                handleClick={handleSubmit}
+                handleClick={e => submit(e)}
                 value="Add Issue"
             />
         </form>

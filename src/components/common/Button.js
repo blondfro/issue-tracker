@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Button = ({ id, type, classes, handleClick, value}) => {
+const Button = ({ cssId, itemId, type, classes, handleClick, value}) => {
     return (
         <button
-            id={id}
+            id={cssId}
             type={type}
             className={classes}
-            onClick={handleClick}
+            onClick={itemId ? (()=> handleClick(itemId)) : handleClick}
         >
             {value}
         </button>

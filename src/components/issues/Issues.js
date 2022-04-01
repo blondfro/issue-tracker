@@ -26,7 +26,8 @@ const Issues = () => {
         ))
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
         const newIssue = {
             ...issue,
@@ -34,7 +35,6 @@ const Issues = () => {
             createdAt: Date.now(),
             status: STATUS.OPEN
         }
-
 
         if (issues.find(item => item._id === issue._id)) {
             let newIssues = issues.map(item => {
@@ -74,8 +74,8 @@ const Issues = () => {
             <IssueForm issue={issue} onChange={handleChange} submit={handleSubmit}/>
             <IssueList
                 issues={issues}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
                 toggleStatus={toggleStatus}/>
         </>
     );
