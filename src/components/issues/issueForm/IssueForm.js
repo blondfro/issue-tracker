@@ -5,12 +5,13 @@ import SelectInputField from "../../common/SelectInputField";
 import Button from "../../common/Button";
 
 import { SEVERITY_LEVEL } from "../../../constants/constants";
+import TextAreaInputField from "../../common/TextAreaInputField";
 
 const IssueForm = ({ issue, onChange, submit, editing }) => {
 
     return (
         <form id="issueInputForm">
-            <TextInputField
+            <TextAreaInputField
                 label="issueDescInput"
                 name="description"
                 labelText="Describe the Issue"
