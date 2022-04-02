@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckboxInputField = ({ label, name, options, value, labelText, onChange}) => {
+const SelectInputField = ({ label, name, options, value, labelText, onChange}) => {
     return (
         <div className="form-group">
             <label htmlFor={label}>
@@ -22,4 +22,4 @@ const CheckboxInputField = ({ label, name, options, value, labelText, onChange})
     );
 };
 
-export default CheckboxInputField;
+export default SelectInputField;

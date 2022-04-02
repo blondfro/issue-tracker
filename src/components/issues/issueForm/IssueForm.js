@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TextInputField from "../../common/TextInputField";
-import CheckboxInputField from "../../common/CheckboxInputField";
+import SelectInputField from "../../common/SelectInputField";
 import Button from "../../common/Button";
 
 import { SEVERITY_LEVEL } from "../../../constants/constants";
@@ -17,7 +17,7 @@ const IssueForm = ({ issue, onChange, submit, editing }) => {
                 value={issue.description}
                 onChange={onChange}
             />
-            <CheckboxInputField
+            <SelectInputField
                 label="issueSeverityInput"
                 name="severity"
                 labelText="Severity Level"
