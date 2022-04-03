@@ -7,7 +7,9 @@ import Button from "../../common/Button";
 import { SEVERITY_LEVEL } from "../../../constants/constants";
 import TextAreaInputField from "../../common/TextAreaInputField";
 
-const IssueForm = ({ issue, onChange, submit, editing }) => {
+
+
+const IssueForm = ({ issue, onChange, submit, editing, filter, selectProperty }) => {
 
     return (
         <form id="issueInputForm">
@@ -33,6 +35,18 @@ const IssueForm = ({ issue, onChange, submit, editing }) => {
                 value={issue.assignedTo}
                 onChange={onChange}
             />
+            <>
+                <ul>
+                    {!issue.assignedTo && (<li key="nores">no results</li>)}
+                    {issue.assignedTo &&
+                    filter().map(user => (
+                        <li key={user._id} onClick={()=> selectProperty(user)}>
+                            {user.first_name} {user.last_name}
+                        </li>)
+                    )
+                    }
+                </ul>
+            </>
             <Button
                 cssId="submitBtn"
                 type="submit"
