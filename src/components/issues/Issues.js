@@ -1,9 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import IssueForm from "./issueForm/IssueForm";
 import IssueList from "./issueList/IssueList";
-import {v4 as uuidv4} from "uuid";
 
-import { STATUS } from "../../constants/constants";
+import {
+    deleteIssue,
+    getAllIssues,
+    getIssueByID,
+    saveNewIssue,
+    toggleIssueStatus,
+    updateIssue
+} from "../../api/issuesApi";
 
 const usersList = [
     {
@@ -63,13 +69,27 @@ const Issues = () => {
     const [ issue, setIssue ] = useState({
         _id: 0,
         description: "",
-        severity: "",
+        severity: "Low",
         assignedTo: "",
         assignedTo_Id: "",
         createdAt: "",
         status: ""
     })
     const [ isEditing, setIsEditing ] = useState(false);
+    const [ update, setUpdate ] = useState(true)
+
+    const getUsers = async () => {
+        const results = getAllIssues();
+        setIssues(results);
+    }
+
+    useEffect(()=> {
+        if (update) {
+            getUsers()
+        }
+
+        setUpdate(false);
+    }, [update])
 
 
     const handleChange = (event) => {
@@ -85,40 +105,28 @@ const Issues = () => {
     const filterList = () => {
         let lowercaseSearch = issue.assignedTo.toLowerCase();
 
-        let filteredList = issue.assignedTo
+        return issue.assignedTo
             ? usersList.filter(item =>
                 item.first_name.toLowerCase().includes(lowercaseSearch)
                 || item.last_name.toLowerCase().includes(lowercaseSearch)
             )
             : usersList
-
-        // setFilteredUsers(filteredList)
-        return filteredList;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newIssue = {
-            ...issue,
-            _id: uuidv4(),
-            createdAt: Date.now(),
-            status: STATUS.OPEN
-        }
-
         if (issues.find(item => item._id === issue._id)) {
-            let newIssues = issues.map(item => {
-                if (item._id === issue._id) {
-                    item = { ...issue };
-                    return item
-                } else return  item
-            });
-            setIssues([...newIssues]);
+            const updatedIssues = await updateIssue(issue)
+            setIssues(updatedIssues)
+
         } else {
-            setIssues([ ...issues, newIssue])
+            const updatedIssues = await saveNewIssue(issue)
+            setIssues(updatedIssues)
         }
 
         setIsEditing(false);
+
         setIssue({
             _id: 0,
             description: "",
@@ -127,35 +135,30 @@ const Issues = () => {
             assignedTo_Id: "",
             createdAt: ""
         })
+
+        setUpdate(true);
     }
 
-    const handleEdit = (id) => {
+    const handleEdit = async (id) => {
         setIsEditing(true);
 
-        const editIssue = issues.find(item => item._id === id);
+        const editIssue = await getIssueByID(id);
         setIssue(editIssue);
+
+        setUpdate(true);
     }
 
-    const handleDelete = (id) => {
-        const updatedIssues = issues.filter(item => item._id !== id);
+    const handleDelete = async (id) => {
+        const updatedIssues = await deleteIssue(id);
         setIssues(updatedIssues);
+        setUpdate(true);
     }
 
-    const toggleStatus = (id) => {
-        const updatedIssues = issues.filter(item => {
-            if (item._id === id) {
-                if (item.status === STATUS.OPEN) {
-                    item.status = STATUS.CLOSED
-                } else {
-                    item.status = STATUS.OPEN
-                }
-                return item
-            } else {
-                return item
-            }
-        })
+    const toggleStatus = async (id) => {
+        const updatedIssues = await toggleIssueStatus(id);
 
         setIssues(updatedIssues);
+        setUpdate(true);
     }
 
     const selectItemProperty = (user) => {
