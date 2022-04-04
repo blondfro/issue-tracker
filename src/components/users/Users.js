@@ -2,7 +2,13 @@ import React, {useEffect, useState} from 'react';
 import UserForm from "./userForm/UserForm";
 import UserList from "./userList/UserList";
 
-import {getAllUsers, getUserByID, updateUser, deleteUser, saveNewUser} from "../../api/usersApi";
+import {
+    getAllUsers,
+    getUserByID,
+    updateUser,
+    deleteUser,
+    saveNewUser
+} from "../../api/usersApi";
 
 const Users = () => {
     const [users, setUsers] = useState(null);
