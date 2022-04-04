@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import UserForm from "./userForm/UserForm";
 import UserList from "./userList/UserList";
-import {v4 as uuidv4} from "uuid";
 
-import {AVATAR_URL, EMAIL_ADDR} from "../../constants/constants";
-
+import {getAllUsers, getUserByID, updateUser, deleteUser, saveNewUser} from "../../api/usersApi";
 
 const Users = () => {
     const [users, setUsers] = useState(null);
@@ -14,7 +12,7 @@ const Users = () => {
         last_name: "",
         user_name: "",
         email: "",
-        department: "",
+        department: "Research and Development",
         avatar: "",
         createdAt: ""
     })
@@ -23,16 +21,9 @@ const Users = () => {
     const [loading, setLoading] = useState(true)
 
     const getUsers = async () => {
-        if (users) {
-            return users
-        } else {
-            await fetch("data/MOCK_USER_DATA.json")
-                .then(res => res.json())
-                .then(data => {
-                    setUsers(data);
-                    setLoading(false);
-                });
-        }
+        const results = await getAllUsers();
+
+        setUsers(results);
 
     }
 
@@ -55,34 +46,17 @@ const Users = () => {
         ))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const userName = `${user.first_name.charAt(0)}${user.last_name}`
-
-        const newUser = {
-            ...user,
-            _id: uuidv4(),
-            user_name: userName,
-            email: `${userName}${EMAIL_ADDR.EMAIL}`,
-            avatar: `${AVATAR_URL.START}${user.user_name}${AVATAR_URL.END}`,
-            createdAt: Date.now(),
-        }
 
         if (users.find(item => item._id === user._id)) {
-            let updatedUser = {
-                ...user,
-                user_name: `${user.first_name.charAt(0)}${user.last_name}`,
-                email: `${user.first_name.charAt(0)}${user.last_name}${EMAIL_ADDR.EMAIL}`
-            }
-            let newUsers = users.map(item => {
-                if (item._id === user._id) {
-                    item = {...updatedUser};
-                    return item
-                } else return item
-            });
-            setUsers([...newUsers]);
+
+            let updatedUsers = await updateUser(user);
+            setUsers(updatedUsers)
+
         } else {
-            setUsers([...users, newUser])
+            let updatedUsers = await saveNewUser(user);
+            setUsers(updatedUsers);
         }
 
         setIsEditing(false);
@@ -94,21 +68,23 @@ const Users = () => {
             last_name: "",
             user_name: "",
             email: "",
-            department: "",
+            department: "Research and Development",
             avatar: ""
         })
 
+        setUpdate(true);
     }
 
-    const handleEdit = (id) => {
+    const handleEdit = async (id) => {
         setIsEditing(true);
 
-        const editUser = users.find(item => item._id === id);
+        const editUser = await getUserByID(id);
         setUser(editUser);
+        setUpdate(true);
     }
 
-    const handleDelete = (id) => {
-        const updatedUsers = users.filter(item => item._id !== id);
+    const handleDelete = async (id) => {
+        const updatedUsers = await deleteUser(id)
 
         setUsers(updatedUsers);
         setUpdate(true);

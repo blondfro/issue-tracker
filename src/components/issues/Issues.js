@@ -130,7 +130,7 @@ const Issues = () => {
         setIssue({
             _id: 0,
             description: "",
-            severity: "",
+            severity: "Low",
             assignedTo: "",
             assignedTo_Id: "",
             createdAt: ""
