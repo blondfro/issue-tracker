@@ -10,9 +10,11 @@ const UserList = ({ users, onEdit, onDelete}) => {
                     ? null
                     :
                     <>
-
-                        <table>
-                            <thead>
+                        <table
+                            className="table table-striped table-hover table-bordered"
+                            style={{maxWidth: "1200px", margin: "0 15%"}}
+                        >
+                            <thead className="table-dark">
                             <tr>
                                 <th />
                                 <th>Name</th>

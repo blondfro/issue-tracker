@@ -4,7 +4,7 @@ const TextInputField = ({ label, name, labelText, value, onChange}) => {
     return (
         <div className="form-group">
             {labelText}
-            <label htmlFor={name}>
+            <label htmlFor={name} className="form-label">
                 <input
                     name={name}
                     className="form-control"

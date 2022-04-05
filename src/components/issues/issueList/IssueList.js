@@ -11,8 +11,11 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                     ? null
                     :
                     <>
-                        <table>
-                            <thead>
+                        <table
+                            className="table table-striped table-hover table-bordered"
+                            style={{maxWidth: "1200px", margin: "0 15%"}}
+                        >
+                            <thead className="table-dark">
                             <tr>
                                 <th />
                                 <th>Status</th>
@@ -32,13 +35,13 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                                 issue.status === "Open"
                                                     ? <Button
                                                         itemId={issue._id}
-                                                        classes="btn btn-warning"
+                                                        classes="btn btn-outline-warning"
                                                         handleClick={toggleStatus}
                                                         value="Close Issue"
                                                     />
                                                     : <Button
                                                         itemId={issue._id}
-                                                        classes="btn btn-success"
+                                                        classes="btn btn-outline-success"
                                                         handleClick={toggleStatus}
                                                         value="Open Issue"
                                                     />
@@ -51,7 +54,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                         <td>
                                             <Button
                                                 itemId={issue._id}
-                                                classes="btn btn-info"
+                                                classes="btn btn-outline-info"
                                                 handleClick={onEdit}
                                                 value="Edit"
                                             />
@@ -59,7 +62,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                         <td>
                                             <Button
                                                 itemId={issue._id}
-                                                classes="btn btn-danger"
+                                                classes="btn btn-outline-danger"
                                                 handleClick={onDelete}
                                                 value="Delete"
                                             />
