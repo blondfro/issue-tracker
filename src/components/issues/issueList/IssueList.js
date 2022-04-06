@@ -21,6 +21,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                 <th>Status</th>
                                 <th>Severity</th>
                                 <th>Description</th>
+                                <th>Created By</th>
                                 <th>Assigned To</th>
                                 <th />
                                 <th />
@@ -50,6 +51,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                         <td>{issue.status}</td>
                                         <td>{issue.severity}</td>
                                         <td>{issue.description}</td>
+                                        <td>{issue.createdBy}</td>
                                         <td>{issue.assignedTo}</td>
                                         <td>
                                             <Button

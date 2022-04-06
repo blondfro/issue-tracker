@@ -22,6 +22,7 @@ export const saveNewIssue = (issue) => {
     const newIssue = {
         ...issue,
         _id: uuidv4(),
+        createdBy: "James",
         createdAt: Date.now(),
         status: STATUS.OPEN
     }

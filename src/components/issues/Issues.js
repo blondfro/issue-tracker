@@ -70,6 +70,7 @@ const Issues = () => {
         _id: 0,
         description: "",
         severity: "Low",
+        createdBy: "",
         assignedTo: "",
         assignedTo_Id: "",
         createdAt: "",
@@ -131,6 +132,7 @@ const Issues = () => {
             _id: 0,
             description: "",
             severity: "Low",
+            createdBy: "",
             assignedTo: "",
             assignedTo_Id: "",
             createdAt: ""
