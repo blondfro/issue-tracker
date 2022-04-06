@@ -1,0 +1,22 @@
+
+input[type=text], select {
+    border: 2px solid cadetblue;
+    border-radius: 4px;
+    margin: .5rem;
+    display: inline-block;
+    width: 20rem;
+}
+
+textarea {
+    width: 20rem;
+    height: 400px;
+    margin: .5rem;
+    box-sizing: border-box;
+    border: 2px solid cadetblue;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
+select {
+    width: 100%;
+}

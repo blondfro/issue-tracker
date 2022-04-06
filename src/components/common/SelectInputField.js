@@ -1,22 +1,26 @@
 import React from 'react';
 
-const SelectInputField = ({ label, name, options, value, labelText, onChange}) => {
+import "./input-styles.css"
+
+const SelectInputField = ({label, name, options, value, labelText, onChange}) => {
     return (
-        <div className="form-group">
+        <div className="form-floating mb-3">
+            <select
+                id={label}
+                name={name}
+                className="form-select"
+                value={value}
+                onChange={onChange}
+            >
+                {options.map(option =>
+                    <option key={option} value={option}>{option}</option>
+                )}
+            </select>
             <label htmlFor={label}>
                 {labelText}
-                <select
-                    id={label}
-                    name={name}
-                    className="form-control"
-                    value={value}
-                    onChange={onChange}
-                >
-                    {options.map(option =>
-                        <option key={option} value={option}>{option}</option>
-                    )}
-                </select>
             </label>
+
+
         </div>
 
     );

@@ -1,0 +1,8 @@
+li {
+    cursor: default;
+}
+
+li:hover {
+    background-color: #bad5db;
+}
+
