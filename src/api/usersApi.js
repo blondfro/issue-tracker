@@ -4,8 +4,20 @@ import {AVATAR_URL, EMAIL_ADDR} from "../constants/constants";
 const url = "data/MOCK_USER_DATA.json";
 const storageKey = "users";
 
+const apiUrl = "http://localhost:5000/users";
+
 
 export const getAllUsers = () => {
+    const users = fetch(apiUrl, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data=> console.log(data));
+
     if (JSON.parse(localStorage.getItem(storageKey))) {
         return JSON.parse(localStorage.getItem(storageKey));
     } else {

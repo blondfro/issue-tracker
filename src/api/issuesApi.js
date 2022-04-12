@@ -3,7 +3,19 @@ import { STATUS } from "../constants/constants";
 
 const storageKey = "issues";
 
+const url = "http://localhost:5000/issues"
+
 export const getAllIssues = () => {
+    const issues = fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data=> console.log(data));
+
     if (JSON.parse(localStorage.getItem(storageKey))) {
         return JSON.parse(localStorage.getItem(storageKey));
     } else return []
