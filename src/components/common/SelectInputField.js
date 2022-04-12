@@ -8,7 +8,7 @@ const SelectInputField = ({label, name, options, value, labelText, onChange}) =>
             <select
                 id={label}
                 name={name}
-                className="form-select"
+                className="form-select select-input"
                 value={value}
                 onChange={onChange}
             >

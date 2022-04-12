@@ -8,7 +8,7 @@ const TextAreaInputField = ({ label, name, labelText, value, onChange}) => {
                 name={name}
                 value={value}
                 id={label}
-                className="form-control"
+                className="form-control textArea-input"
                 cols="30"
                 rows="4"
                 onChange={onChange}
