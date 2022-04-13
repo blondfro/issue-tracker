@@ -56,17 +56,11 @@ const Users = () => {
         e.preventDefault();
 
         if (users.find(item => item._id === user._id)) {
-
-            let updatedUsers = await updateUser(user);
-            setUsers(updatedUsers)
-
+            await updateUser(user);
+            setIsEditing(false);
         } else {
-            let updatedUsers = await saveNewUser(user);
-            setUsers(updatedUsers);
+            await saveNewUser(user);
         }
-
-        setIsEditing(false);
-        setUpdate(true);
 
         setUser({
             _id: 0,
@@ -90,9 +84,8 @@ const Users = () => {
     }
 
     const handleDelete = async (id) => {
-        const updatedUsers = await deleteUser(id)
+        await deleteUser(id)
 
-        setUsers(updatedUsers);
         setUpdate(true);
     }
 

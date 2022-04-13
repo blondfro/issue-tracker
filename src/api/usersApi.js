@@ -1,14 +1,13 @@
-import {v4 as uuidv4} from "uuid";
 import {AVATAR_URL, EMAIL_ADDR} from "../constants/constants";
 
-const url = "data/MOCK_USER_DATA.json";
-const storageKey = "users";
+// const url = "data/MOCK_USER_DATA.json";
+// const storageKey = "users";
 
 const apiUrl = "http://localhost:5000/users";
 
 
 export const getAllUsers = () => {
-    const users = fetch(apiUrl, {
+    return fetch(apiUrl, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -16,73 +15,79 @@ export const getAllUsers = () => {
         }
     })
         .then(res => res.json())
-        .then(data=> console.log(data));
-
-    if (JSON.parse(localStorage.getItem(storageKey))) {
-        return JSON.parse(localStorage.getItem(storageKey));
-    } else {
-       return  fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                localStorage.setItem(storageKey, JSON.stringify(data))
-            })
-    }
-
+        .then(data => data);
 }
 
 export const getUserByID = (id) => {
-    const users = getAllUsers();
-
-    return  users.find(user => user._id === id);
+    return fetch(`${apiUrl}/${id}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data => data);
 }
 
 export const saveNewUser = (user) => {
-    const updatedUsers = getAllUsers();
     const userName = `${user.first_name.charAt(0)}${user.last_name}`
+    const {_id, ...tempUser} = user;
 
     const newUser = {
-        ...user,
-        _id: uuidv4(),
+        ...tempUser,
         user_name: userName,
         email: `${userName}${EMAIL_ADDR.EMAIL}`,
         avatar: `${AVATAR_URL.START}${user.user_name}${AVATAR_URL.END}`,
         createdAt: Date.now(),
     }
 
-    updatedUsers.push(newUser);
+    fetch(apiUrl, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(newUser),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => {
+            console.log(res)
+            res.json()
+        })
 
-    localStorage.setItem(storageKey, JSON.stringify(updatedUsers));
-
-    return updatedUsers
 }
 
 export const updateUser = (user) => {
-    const users = getAllUsers();
+    const updatedUser = {
+        ...user,
+        user_name: `${user.first_name.charAt(0)}${user.last_name}`,
+        email: `${user.first_name.charAt(0)}${user.last_name}${EMAIL_ADDR.EMAIL}`
+    }
 
-    let updatedUsers = users.map(item =>
-        item._id === user._id
-            ? ({
-                ...user,
-                user_name: `${user.first_name.charAt(0)}${user.last_name}`,
-                email: `${user.first_name.charAt(0)}${user.last_name}${EMAIL_ADDR.EMAIL}`
-            })
-            : item
-    )
+    fetch(`${apiUrl}/${updatedUser._id}`, {
+        method: "PUT",
+        mode: "cors",
+        body: JSON.stringify(updatedUser),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => {
+            console.log(res)
+            res.json()
+        })
 
-    localStorage.setItem(storageKey, JSON.stringify(updatedUsers));
-
-    return updatedUsers
 }
 
 export const deleteUser = (id) => {
-    const users = getAllUsers();
-
-    let updatedUsers = users.filter(item =>
-        item._id !== id
-    )
-
-    localStorage.setItem(storageKey, JSON.stringify(updatedUsers));
-    return updatedUsers
+    fetch(`${apiUrl}/${id}`, {
+        method: "DELETE",
+        mode: "cors",
+    })
+        .then(res => {
+            console.log(res)
+            res.json()
+        })
 }
 
 
