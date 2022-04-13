@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../common/Button";
 
-const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
+const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus }) => {
 
     return (
         <div>
@@ -39,12 +39,14 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                                         classes="btn btn-outline-warning"
                                                         handleClick={toggleStatus}
                                                         value="Close Issue"
+                                                        disabled={!loginStatus}
                                                     />
                                                     : <Button
                                                         itemId={issue._id}
                                                         classes="btn btn-outline-success"
                                                         handleClick={toggleStatus}
                                                         value="Open Issue"
+                                                        disabled={!loginStatus}
                                                     />
                                             }
                                         </td>
@@ -59,6 +61,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                                 classes="btn btn-outline-info"
                                                 handleClick={onEdit}
                                                 value="Edit"
+                                                disabled={!loginStatus}
                                             />
                                         </td>
                                         <td>
@@ -67,6 +70,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus }) => {
                                                 classes="btn btn-outline-danger"
                                                 handleClick={onDelete}
                                                 value="Delete"
+                                                disabled={!loginStatus}
                                             />
                                         </td>
                                     </tr>

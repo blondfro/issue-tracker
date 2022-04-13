@@ -10,7 +10,7 @@ import {
     saveNewUser
 } from "../../api/usersApi";
 
-const Users = () => {
+const Users = ({ loginStatus }) => {
     const [users, setUsers] = useState(null);
     const [user, setUser] = useState({
         _id: 0,
@@ -91,16 +91,22 @@ const Users = () => {
 
     return (
         <>
-            <UserForm
-                user={user}
-                onChange={handleChange}
-                submit={handleSubmit}
-                editing={isEditing}
-            />
+            {
+                loginStatus
+                    ?
+                    <UserForm
+                        user={user}
+                        onChange={handleChange}
+                        submit={handleSubmit}
+                        editing={isEditing}
+                    />
+                    : null
+            }
             <UserList
                 users={users}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                loginStatus={loginStatus}
             />
 
 

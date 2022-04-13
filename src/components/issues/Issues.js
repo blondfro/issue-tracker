@@ -12,7 +12,7 @@ import {getAllUsers} from "../../api/usersApi";
 import {STATUS} from "../../constants/constants";
 
 
-const Issues = () => {
+const Issues = ({ loginStatus }) => {
     const [ issues, setIssues ] = useState([]);
     const [ issue, setIssue ] = useState({
         _id: 0,
@@ -138,19 +138,26 @@ const Issues = () => {
 
     return (
         <>
-            <IssueForm
-                issue={issue}
-                onChange={handleChange}
-                submit={handleSubmit}
-                editing={isEditing}
-                filter={filterList}
-                selectProperty={selectItemProperty}
-            />
+            {
+                loginStatus
+                    ?
+                    <IssueForm
+                        issue={issue}
+                        onChange={handleChange}
+                        submit={handleSubmit}
+                        editing={isEditing}
+                        filter={filterList}
+                        selectProperty={selectItemProperty}
+                    />
+                    : null
+            }
+
             <IssueList
                 issues={issues}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 toggleStatus={toggleStatus}
+                loginStatus={loginStatus}
             />
         </>
     );
