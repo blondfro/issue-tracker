@@ -1,12 +1,9 @@
-import {v4 as uuidv4} from "uuid";
 import { STATUS } from "../constants/constants";
-
-const storageKey = "issues";
 
 const url = "http://localhost:5000/issues"
 
 export const getAllIssues = () => {
-    const issues = fetch(url, {
+    return fetch(url, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -14,82 +11,94 @@ export const getAllIssues = () => {
         }
     })
         .then(res => res.json())
-        .then(data=> console.log(data));
-
-    if (JSON.parse(localStorage.getItem(storageKey))) {
-        return JSON.parse(localStorage.getItem(storageKey));
-    } else return []
+        .then(data=> data);
 
 }
 
 export const getIssueByID = (id) => {
-    const issues = getAllIssues();
-
-    return  issues.find(item => item._id === id);
+   return fetch(`${url}/${id}`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data=> data);
 }
 
 export const saveNewIssue = (issue) => {
-    const updatedIssues = getAllIssues();
+    const {_id, createdBy, assignedTo, ...tempIssue} = issue;
 
     const newIssue = {
-        ...issue,
-        _id: uuidv4(),
-        createdBy: "James",
+        ...tempIssue,
         createdAt: Date.now(),
+        createdBy_id: "6256159f3d6129c300cec972",
         status: STATUS.OPEN
     }
 
-    updatedIssues.push(newIssue);
+    fetch(url, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify(newIssue),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json()
+        )
 
-    localStorage.setItem(storageKey, JSON.stringify(updatedIssues));
-
-    return updatedIssues
 }
 
 export const updateIssue = (issue) => {
-    const issues = getAllIssues();
+   const { _id, createdBy, assignedTo, ...updatedIssue} = issue;
 
-    let updatedIssues = issues.map(item =>
-        item._id === issue._id
-            ? issue
-            : item
-    )
-
-    localStorage.setItem(storageKey, JSON.stringify(updatedIssues));
-
-    return updatedIssues
+    fetch(`${url}/${issue._id}`, {
+        method: "PUT",
+        mode: "cors",
+        body: JSON.stringify(updatedIssue),
+        headers: {
+            "Content-type": "application/json"
+        }
+    })
+        .then(res => res.json())
 }
 
 export const deleteIssue = (id) => {
-    const issues = getAllIssues();
-
-    let updatedIssues = issues.filter(item =>
-        item._id !== id
-    )
-
-    localStorage.setItem(storageKey, JSON.stringify(updatedIssues));
-    return updatedIssues
-
-}
-
-export const toggleIssueStatus = (id) => {
-    const issues = getAllIssues();
-
-    const updatedIssues = issues.filter(item => {
-        if (item._id === id) {
-            if (item.status === STATUS.OPEN) {
-                item.status = STATUS.CLOSED
-            } else {
-                item.status = STATUS.OPEN
-            }
-            return item
-        } else {
-            return item
-        }
+    fetch(`${url}/${id}`, {
+        method: "DELETE",
+        mode: "cors",
     })
-
-    localStorage.setItem(storageKey, JSON.stringify(updatedIssues));
-
-    return updatedIssues
+        .then(res => {
+            console.log(res)
+            res.json()
+        })
 }
+
+// export const toggleIssueStatus = (id) => {
+//
+//     fetch(`${url}/${id}/status`, {
+//         method: "PATCH",
+//         body: id
+//     })
+//
+//     const issues = getAllIssues();
+//
+//     const updatedIssues = issues.filter(item => {
+//         if (item._id === id) {
+//             if (item.status === STATUS.OPEN) {
+//                 item.status = STATUS.CLOSED
+//             } else {
+//                 item.status = STATUS.OPEN
+//             }
+//             return item
+//         } else {
+//             return item
+//         }
+//     })
+//
+//     localStorage.setItem(storageKey, JSON.stringify(updatedIssues));
+//
+//     return updatedIssues
+// }
 

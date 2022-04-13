@@ -5,64 +5,12 @@ import IssueList from "./issueList/IssueList";
 import {
     deleteIssue,
     getAllIssues,
-    getIssueByID,
     saveNewIssue,
-    toggleIssueStatus,
     updateIssue
 } from "../../api/issuesApi";
+import {getAllUsers} from "../../api/usersApi";
+import {STATUS} from "../../constants/constants";
 
-const usersList = [
-    {
-        _id: "c42c8da6-56e5-4142-b02d-cb8f0dcfdddf",
-        first_name: "Erin",
-        last_name: "Stanmer",
-        user_name: "estanmer0",
-        email: "estanmer0@democo.com",
-        department: "Research and Development",
-        avatar: "https://robohash.org/rerumrepellatqui.png?size=50x50&set=set1",
-        createdAt: "1632369746000"
-    },
-    {
-        _id: "7788cb29-33f4-4b5a-be2d-b748fb90e312",
-        first_name: "Micheil",
-        last_name: "Donhardt",
-        user_name: "mdonhardt1",
-        email: "mdonhardt1@democo.com",
-        department: "Training",
-        avatar: "https://robohash.org/totamsapienteautem.png?size=50x50&set=set1",
-        createdAt: "1641215813000"
-    },
-    {
-        _id: "b9fbd040-d06c-4a57-99c1-f80088b2435b",
-        first_name: "Frants",
-        last_name: "Drinan",
-        user_name: "fdrinan2",
-        email: "fdrinan2@democo.com",
-        department: "Human Resources",
-        avatar: "https://robohash.org/architectoaliquidquae.png?size=50x50&set=set1",
-        createdAt: "1621211341000"
-    },
-    {
-        _id: "d0b1919e-839e-4c0d-ab32-7ac45ea46a64",
-        first_name: "Catherina",
-        last_name: "Houlson",
-        user_name: "choulson3",
-        email: "choulson3@democo.com",
-        department: "Legal",
-        avatar: "https://robohash.org/minimaerrorfugiat.png?size=50x50&set=set1",
-        createdAt: "1641968589000"
-    },
-    {
-        _id: "957f0717-58a5-414c-9909-a2e95557694a",
-        first_name: "Halimeda",
-        last_name: "Amorts",
-        user_name: "hamorts4",
-        email: "hamorts4@democo.com",
-        department: "Business Development",
-        avatar: "https://robohash.org/quidemrecusandaeplaceat.png?size=50x50&set=set1",
-        createdAt: "1639627397000"
-    }
-];
 
 const Issues = () => {
     const [ issues, setIssues ] = useState([]);
@@ -78,16 +26,28 @@ const Issues = () => {
         status: ""
     })
     const [ isEditing, setIsEditing ] = useState(false);
-    const [ update, setUpdate ] = useState(true)
+    const [ update, setUpdate ] = useState(true);
+    const [ users, setUsers ] = useState([])
 
-    const getUsers = async () => {
-        const results = getAllIssues();
-        setIssues(results);
+    const getIssues = async () => {
+        const results = await getAllIssues();
+        const usersList = await getAllUsers();
+
+        const updatedIssues = results.map(item => {
+            let createdBy = usersList.find(user => user._id === item.createdBy_id);
+            let assignedTo = usersList.find(user => user._id === item.assignedTo_id);
+            item.createdBy = `${createdBy.first_name} ${createdBy.last_name}`;
+            item.assignedTo = `${assignedTo.first_name} ${assignedTo.last_name}`;
+            return item
+        });
+
+        setUsers(usersList);
+        setIssues(updatedIssues);
     }
 
     useEffect(()=> {
         if (update) {
-            getUsers()
+            getIssues()
         }
 
         setUpdate(false);
@@ -104,30 +64,17 @@ const Issues = () => {
         ))
     }
 
-    const filterList = () => {
-        let lowercaseSearch = issue.assignedTo.toLowerCase();
-
-        return issue.assignedTo
-            ? usersList.filter(item =>
-                item.first_name.toLowerCase().includes(lowercaseSearch)
-                || item.last_name.toLowerCase().includes(lowercaseSearch)
-            )
-            : usersList
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (issues.find(item => item._id === issue._id)) {
-            const updatedIssues = await updateIssue(issue)
-            setIssues(updatedIssues)
+            await updateIssue(issue);
 
+            setIsEditing(false);
         } else {
-            const updatedIssues = await saveNewIssue(issue)
-            setIssues(updatedIssues)
+            await saveNewIssue(issue)
         }
-
-        setIsEditing(false);
 
         setIssue({
             _id: 0,
@@ -146,22 +93,38 @@ const Issues = () => {
     const handleEdit = async (id) => {
         setIsEditing(true);
 
-        const editIssue = await getIssueByID(id);
+        const editIssue = await issues.find(item => item._id === id)
         setIssue(editIssue);
 
         setUpdate(true);
     }
 
     const handleDelete = async (id) => {
-        const updatedIssues = await deleteIssue(id);
-        setIssues(updatedIssues);
+        await deleteIssue(id);
         setUpdate(true);
     }
 
-    const toggleStatus = async (id) => {
-        const updatedIssues = await toggleIssueStatus(id);
+    const filterList = () => {
+        let lowercaseSearch = issue.assignedTo.toLowerCase();
 
-        setIssues(updatedIssues);
+        return issue.assignedTo
+            ? users.filter(item =>
+                item.first_name.toLowerCase().includes(lowercaseSearch)
+                || item.last_name.toLowerCase().includes(lowercaseSearch)
+            )
+            : users
+    }
+
+    const toggleStatus = async (id) => {
+        const updatedIssue = issues.find(item => item._id === id);
+        if (updatedIssue.status === STATUS.OPEN) {
+            updatedIssue.status = STATUS.CLOSED
+        } else {
+            updatedIssue.status = STATUS.OPEN
+        }
+
+        await updateIssue(updatedIssue);
+
         setUpdate(true);
     }
 
