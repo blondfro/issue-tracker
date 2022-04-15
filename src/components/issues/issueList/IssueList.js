@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../common/Button";
 
-const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus }) => {
+const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus, loggedInUser }) => {
 
     return (
         <div>
@@ -29,25 +29,29 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus }) => {
                             </thead>
                             <tbody>
                             {issues.map(issue => {
+                                let disable = true;
+                                if (loggedInUser.role === "admin") {
+                                    disable = false;
+                                } else if (loggedInUser._id === issue.createdBy_id) {
+                                    disable = false;
+                                }
                                 return (
                                     <tr key={issue._id}>
                                         <td>
                                             {
-                                                issue.status === "Open"
-                                                    ? <Button
-                                                        itemId={issue._id}
-                                                        classes="btn btn-outline-warning"
-                                                        handleClick={toggleStatus}
-                                                        value="Close Issue"
-                                                        disabled={!loginStatus}
-                                                    />
-                                                    : <Button
-                                                        itemId={issue._id}
-                                                        classes="btn btn-outline-success"
-                                                        handleClick={toggleStatus}
-                                                        value="Open Issue"
-                                                        disabled={!loginStatus}
-                                                    />
+                                                <Button
+                                                    itemId={issue._id}
+                                                    classes={issue.status === "Open"
+                                                        ? "btn btn-outline-warning"
+                                                        : "btn btn-outline-success"
+                                                    }
+                                                    handleClick={toggleStatus}
+                                                    value={issue.status === "Open"
+                                                        ? "Close Issue"
+                                                        : "Open Issue"
+                                                    }
+                                                    disabled={disable}
+                                                />
                                             }
                                         </td>
                                         <td>{issue.status}</td>
@@ -61,7 +65,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus }) => {
                                                 classes="btn btn-outline-info"
                                                 handleClick={onEdit}
                                                 value="Edit"
-                                                disabled={!loginStatus}
+                                                disabled={disable}
                                             />
                                         </td>
                                         <td>
@@ -70,7 +74,7 @@ const IssueList = ({ issues, onEdit, onDelete, toggleStatus, loginStatus }) => {
                                                 classes="btn btn-outline-danger"
                                                 handleClick={onDelete}
                                                 value="Delete"
-                                                disabled={!loginStatus}
+                                                disabled={disable}
                                             />
                                         </td>
                                     </tr>

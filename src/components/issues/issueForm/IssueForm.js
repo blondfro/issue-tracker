@@ -9,7 +9,7 @@ import TextAreaInputField from "../../common/TextAreaInputField";
 
 import "./issueForm-styles.css";
 
-const IssueForm = ({ issue, onChange, submit, editing, filter, selectProperty }) => {
+const IssueForm = ({ issue, onChange, submit, cancel, editing, filter, selectProperty }) => {
 
     return (
         <div className="d-flex justify-content-center text-center">
@@ -59,6 +59,13 @@ const IssueForm = ({ issue, onChange, submit, editing, filter, selectProperty })
                     classes="btn btn-primary"
                     handleClick={e => submit(e)}
                     value={editing ? "Edit Issue" : "Add Issue"}
+                />
+                <Button
+                    cssId="cancelBtn"
+                    type="submit"
+                    classes="btn btn-secondary"
+                    handleClick={e => cancel(e)}
+                    value="Cancel"
                 />
             </form>
         </div>

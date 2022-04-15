@@ -46,9 +46,6 @@ function App() {
             setLoginStatus(false);
             setLoggedInUser({})
         }
-
-
-
     }
 
     const handleCancel = () => {
@@ -62,9 +59,15 @@ function App() {
         <Navbar />
         <Login showLogin={showLogin} handleLogin={handleLogin} cancel={handleCancel}/>
         <Routes>
-            <Route path="/" exact element={<Home loginStatus={loginStatus}/>} />
-            <Route path="/issues" element={<Issues loginStatus={loginStatus}/>}/>
-            <Route path="/users" element={<Users loginStatus={loginStatus} role={loggedInUser.role}/>} />
+            <Route path="/" exact element={
+                <Home loginStatus={loginStatus}/>
+            } />
+            <Route path="/issues" element={
+                <Issues loginStatus={loginStatus} loggedInUser={loggedInUser}/>
+            }/>
+            <Route path="/users" element={
+                <Users loginStatus={loginStatus} role={loggedInUser.role}/>
+            } />
         </Routes>
 
 

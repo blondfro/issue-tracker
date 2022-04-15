@@ -10,9 +10,10 @@ import {
 } from "../../api/issuesApi";
 import {getAllUsers} from "../../api/usersApi";
 import {STATUS} from "../../constants/constants";
+import Button from "../common/Button";
 
 
-const Issues = ({ loginStatus }) => {
+const Issues = ({ loginStatus, loggedInUser }) => {
     const [ issues, setIssues ] = useState([]);
     const [ issue, setIssue ] = useState({
         _id: 0,
@@ -28,6 +29,7 @@ const Issues = ({ loginStatus }) => {
     const [ isEditing, setIsEditing ] = useState(false);
     const [ update, setUpdate ] = useState(true);
     const [ users, setUsers ] = useState([])
+    const [ showForm, setShowForm ] = useState(false);
 
     const getIssues = async () => {
         const results = await getAllIssues();
@@ -73,21 +75,19 @@ const Issues = ({ loginStatus }) => {
 
             setIsEditing(false);
         } else {
-            await saveNewIssue(issue)
+            let updatedIssue = {...issue, createdBy_id: loggedInUser._id};
+            await saveNewIssue(updatedIssue)
         }
 
-        setIssue({
-            _id: 0,
-            description: "",
-            severity: "Low",
-            createdBy: "",
-            createdBy_id: "",
-            assignedTo: "",
-            assignedTo_id: "",
-            createdAt: ""
-        })
+        resetIssue();
 
+        setShowForm(false);
         setUpdate(true);
+    }
+
+    const handleCreate = (event) => {
+        event.preventDefault();
+        setShowForm(true)
     }
 
     const handleEdit = async (id) => {
@@ -136,15 +136,46 @@ const Issues = ({ loginStatus }) => {
         }))
     }
 
+    const resetIssue = () => {
+        setIssue({
+            _id: 0,
+            description: "",
+            severity: "Low",
+            createdBy: "",
+            createdBy_id: "",
+            assignedTo: "",
+            assignedTo_id: "",
+            createdAt: ""
+        })
+    }
+
+    const handleCancel = (event) => {
+        event.preventDefault();
+        setShowForm(false);
+        resetIssue();
+    }
+
     return (
         <>
             {
                 loginStatus
                     ?
+                    <Button
+                        cssId="create-user-btn"
+                        classes="btn btn-primary"
+                        handleClick={handleCreate}
+                        value="Create User"
+                    />
+                    : null
+            }
+            {
+                showForm
+                    ?
                     <IssueForm
                         issue={issue}
                         onChange={handleChange}
                         submit={handleSubmit}
+                        cancel={handleCancel}
                         editing={isEditing}
                         filter={filterList}
                         selectProperty={selectItemProperty}
@@ -158,6 +189,7 @@ const Issues = ({ loginStatus }) => {
                 onDelete={handleDelete}
                 toggleStatus={toggleStatus}
                 loginStatus={loginStatus}
+                loggedInUser={loggedInUser}
             />
         </>
     );

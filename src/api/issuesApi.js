@@ -33,7 +33,6 @@ export const saveNewIssue = (issue) => {
     const newIssue = {
         ...tempIssue,
         createdAt: Date.now(),
-        createdBy_id: "6256159f3d6129c300cec972",
         status: STATUS.OPEN
     }
 
