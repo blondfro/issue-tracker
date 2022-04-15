@@ -7,7 +7,7 @@ import "./loginStyles.css";
 
 const Login = ({ showLogin, handleLogin, cancel }) => {
     const [ user, setUser ] = useState({
-        name: "",
+        username: "",
         password: ""
     });
 
@@ -27,7 +27,7 @@ const Login = ({ showLogin, handleLogin, cancel }) => {
         handleLogin(user)
 
         setUser({
-            name: "",
+            username: "",
             password: ""
         })
     }
@@ -53,9 +53,9 @@ const Login = ({ showLogin, handleLogin, cancel }) => {
                                 <form id="login-form">
                                     <TextInputField
                                         label="username_input"
-                                        name="name"
+                                        name="username"
                                         labelText="Username"
-                                        value={user.name}
+                                        value={user.username}
                                         onChange={handleChange}
                                     />
                                     <TextInputField

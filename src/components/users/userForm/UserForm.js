@@ -6,7 +6,7 @@ import Button from "../../common/Button";
 import { DEPARTMENTS } from "../../../constants/constants";
 import SelectInputField from "../../common/SelectInputField";
 
-const UserForm = ({ user, onChange, submit, editing}) => {
+const UserForm = ({ user, onChange, submit, cancel, editing}) => {
     return (
         <div className="d-flex justify-content-center text-center">
             <form id="userInputForm">
@@ -38,6 +38,13 @@ const UserForm = ({ user, onChange, submit, editing}) => {
                     classes="btn btn-primary"
                     handleClick={e => submit(e)}
                     value={editing ? "Edit User" : "Add User"}
+                />
+                <Button
+                    cssId="cancelBtn"
+                    type="submit"
+                    classes="btn btn-secondary"
+                    handleClick={e => cancel(e)}
+                    value="Cancel"
                 />
             </form>
         </div>

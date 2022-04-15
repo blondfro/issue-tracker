@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from "../../common/Button";
 
-const UserList = ({ users, onEdit, onDelete, loginStatus}) => {
+const UserList = ({ users, role, onEdit, onDelete}) => {
     return (
         <div>
             <h1> Users List </h1>
@@ -35,7 +35,7 @@ const UserList = ({ users, onEdit, onDelete, loginStatus}) => {
                                                     classes="btn btn-outline-primary"
                                                     handleClick={onEdit}
                                                     value="Edit"
-                                                    disabled={!loginStatus}
+                                                    disabled={role !== "admin"}
                                                 />
                                             </td>
                                             <td>
@@ -51,7 +51,7 @@ const UserList = ({ users, onEdit, onDelete, loginStatus}) => {
                                                     classes="btn btn-outline-danger"
                                                     handleClick={onDelete}
                                                     value="Delete"
-                                                    disabled={!loginStatus}
+                                                    disabled={role !== "admin"}
                                                 />
                                             </td>
                                         </tr>
