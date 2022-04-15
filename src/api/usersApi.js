@@ -37,6 +37,8 @@ export const saveNewUser = (user) => {
     const newUser = {
         ...tempUser,
         user_name: userName,
+        role: "user",
+        password: "1234",
         email: `${userName}${EMAIL_ADDR.EMAIL}`,
         avatar: `${AVATAR_URL.START}${user.user_name}${AVATAR_URL.END}`,
         createdAt: Date.now(),
